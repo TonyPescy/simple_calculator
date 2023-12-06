@@ -1,7 +1,5 @@
 #######################################################################################################################################
 # Title: simp_gui
-# Date Started: 12/5/23
-# Date Completed: TBD
 # Author: Tony Pescatore
 # Description: Simple gui that will be used to build the calculators visuals
 #######################################################################################################################################
@@ -11,11 +9,11 @@ import PySimpleGUI as sg
 
 # constants
 LENGTH = 300
-HEIGHT = 700
-BUT_SIZE_MODIFIER = .015
+HEIGHT = 900
+BUT_SIZE_MODIFIER = .020
 
 # buttons - all buttons will be created below
-# ALL BUTTON COLORS, FONT, AND SIZE ARE TBD ALONG WITH THEME PICKER OPTION
+# ALL BUTTON COLORS, FONT, AND SIZE ARE TBD 
 # SYMBOLS ÷, ←
 
 # 0 button
@@ -87,9 +85,9 @@ disp_lay = [[sg.Button("test")]
 # frames
 
 # display frame
-disp_frame = sg.Frame("", disp_lay, size = (LENGTH, HEIGHT - (LENGTH + LENGTH)), element_justification = "Center")
+disp_frame = sg.Frame("", disp_lay, size = (LENGTH, HEIGHT - (LENGTH + LENGTH + (.5 * LENGTH))), element_justification = "Center")
 # button frame
-but_frame = sg.Frame("", but_lay, size = (LENGTH, (LENGTH + LENGTH)))
+but_frame = sg.Frame("", but_lay, size = (LENGTH, (LENGTH + LENGTH + (.25 * LENGTH))),  element_justification = "Center")
 
 # combined layout
 full_lay = [[disp_frame],
@@ -99,22 +97,63 @@ full_lay = [[disp_frame],
 # window = sg.Window("TEST", full_lay, size = (lENGTH, HEIGHT), use_custom_titlebar = True)
 
 def main():
-    window = sg.Window("TEST", full_lay, size = (LENGTH, HEIGHT), use_custom_titlebar = True)
-    while True:
-        event, values = window.read()
 
-        if event == sg.WIN_CLOSED:
-            window.close()
-            break
-        if event == 'Personal Information':
-            # Set layout to personal info layout or create whole new window
-            break
-        if event == 'Settings':
-            # Set layout to settings or create whole new window
-            break
-        if event == 'Logout':
-            # log user out of app
-            break
+    temp = "string"
 
-    window.close()
+    # fonts = sg.Text.fonts_installed_list()
+
+
+    # sg.theme('Black')
+
+    # layout = [[sg.Text('My Text Element',
+    #             size=(20, 1),
+    #             click_submits=True,
+    #             relief=sg.RELIEF_GROOVE,
+    #             font='Courier` 25',
+    #             text_color='#FF0000',
+    #             background_color='white',
+    #             justification='center',
+    #             pad=(5, 3),
+    #             key='-text-',
+    #             tooltip='This is a text element',
+    #             )],
+    #       [sg.Listbox(fonts, size=(30, 20), change_submits=True, key='-list-')],
+    #       [sg.Input(key='-in-')],
+    #       [sg.Button('Read', bind_return_key=True), sg.Exit()]]
+
+    # window = sg.Window('My new window', layout)
+
+    # while True:     # Event Loop
+    #     event, values = window.read()
+    #     if event in (sg.WIN_CLOSED, 'Exit'):
+    #         break
+    #     text_elem = window['-text-']
+    #     print(event, values)
+    #     if values['-in-'] != '':
+    #         text_elem.update(font=values['-in-'])
+    #     else:
+    #         text_elem.update(font=(values['-list-'][0], 25))
+    # window.close()
+
+
+
+    # MY CODE, ABOVE CODE IS USED TO SEE ALL FONTS TO TEST FONTS ON BUTTONS
+    # window = sg.Window("TEST", full_lay, size = (LENGTH, HEIGHT), use_custom_titlebar = True)
+    # while True:
+    #     event, values = window.read()
+
+    #     if event == sg.WIN_CLOSED:
+    #         window.close()
+    #         break
+    #     if event == 'Personal Information':
+    #         # Set layout to personal info layout or create whole new window
+    #         break
+    #     if event == 'Settings':
+    #         # Set layout to settings or create whole new window
+    #         break
+    #     if event == 'Logout':
+    #         # log user out of app
+    #         break
+
+    # window.close()
 main()
