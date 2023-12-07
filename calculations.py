@@ -95,87 +95,14 @@ def inverse(num):
 #               fin_result - the solved equation  ----  number of chars left in string can be checked to ensure all was solved
 def calc_input(equ):
     # local variables
-    # new_equ_n = ""              # new equation string to be made after negatives have been changed
-    # new_equ_p = ""              # new equation string to be made after negatives have been changed
-    # new_equ_md = ""             # new equation string to be made after multiplication and division have been changed
-    # new_equ_as = ""             # new equation string to be made after negatives have been changed
-
-    # wait_for_r_par = False      # states if we are waiting for ")"
-    # par_result = []             # empty list used if there are any parenthesis in the equation
-    # par_equation = ""           # empty string that will store the equation in the parenthesis, used for recursion
-    # fin_result = 0              # final result
-    # syms = []                   # empty list that will hold the symbols in order.  We use this to do the math on the nums in numbers[]
-    # numbers = []                # numbers in the order they appear in the string
-    # temp_num = ""               # temp string that is used to store numbers bigger than 1 characters
-
-    # TEMPORARY REMOVAL
-    # iterating over string
-    # for c in equ:               # for every character in the equation
-        
-    #     if (c != symbols.ADD and c != symbols.SUB and c != symbols.MUL and c != symbols.DIV and c != symbols.NEG and c != symbols.EXP and c != symbols.L_PAR and c != symbols.R_PAR and c != symbols.EQU):       # checks for any symbols in equation
-    #         # not a symbol
-    #         temp_num += c
-    #     else:                                   # only if c is a symbol
-    #         numbers.append(int(temp_num))       # number has been formed and added to number[]
-    #         temp_num = ""                       # temp_num reset after it has been appended to numbers list
-    #         # NEEDS ERROR CHECKING FOR ALL ERRORS LISTED IN NOTEPAD++
-    #         if c != "=":                        # checks if the symbol is not "=", which acts and a terminator for the equation
-    #             syms.append(c)                  # if it is not the terminator then add it to symbol list
-    #         else:                               # if it is the string terminator, it ends the for loop as the whole string should have been read
-    #             break
-    
-    # # for loop ends
-    # for i in range(len(syms)):              # iterates over all of the symbols in the equation
-        
-    #     # addition
-    #     if syms[i] == symbols.ADD:      # if the symbol is "+"
-    #         if i == 0:                  # if it is the first pair of numbers
-    #             fin_result += plus(int(numbers[i]), int(numbers[i + 1]))
-    #         else:
-    #             fin_result = plus(fin_result, int(numbers[i + 1]))
-    #     # subtraction
-    #     if syms[i] == symbols.SUB:      # if the symbol is "-"
-    #         if i == 0:                  # if it is the first pair of numbers
-    #             fin_result += minus(int(numbers[i]), int(numbers[i + 1]))
-    #         else:
-    #             fin_result = minus(fin_result, int(numbers[i + 1]))
-
-    #     # multiplication
-    #     if syms[i] == symbols.MUL:      # if the symbol is "x"
-    #         if i == 0:                  # if it is the first pair of numbers
-    #             fin_result += multiply(int(numbers[i]), int(numbers[i + 1]))
-    #         else:
-    #             fin_result = multiply(fin_result, int(numbers[i + 1]))
-    #     # division
-    #     if syms[i] == symbols.DIV:      # if the symbol is "÷"
-    #         if i == 0:                  # if it is the first pair of numbers
-    #                 if (int(numbers[i + 1]) != 0):      # checks for divide by zero error
-    #                     fin_result += divide(int(numbers[i]), int(numbers[i + 1]))
-    #                 else:
-    #                     print("divide by zero error goes here")
-    #                     break
-    #         else:
-    #             if (int(numbers[i + 1]) != 0):
-    #                 fin_result = divide(fin_result, int(numbers[i + 1]))
-    #             else:
-    #                 print("divide by zero error goes here")
-    #                 break
-        
-    #     # exponents
-    #     if syms[i] == symbols.EXP:      # if the symbol is "^"
-    #         if i == 0:                  # if it is the first pair of numbers
-    #             fin_result += exponent(int(numbers[i]), int(numbers[i + 1]))
-    #         else:
-    #             fin_result = exponent(fin_result, int(numbers[i + 1]))
-
-    # return fin_result
-
-    # local variables
-    to_insert = []          # empty list to save the new numbers we will use to build the new equation [new_num, insert_num, old_num]
+    to_insert = []          # empty list to save the new numbers we will use to build the new equation
+    sym_count = 0           # variable to count how much a symbol occurs
+    n_n_count = 0           # variable to count how much new numbers there are
 
     # nPEMDAS
     # negatives start
     # only symbol that can be first (except parenthesis, which is special in its own rights) so it has special cases
+    # to_insert = [new_num, insert_num, old_num]
     for i in range(len(equ)):
         if equ[i] == symbols.NEG:                                               # checks for negative in the equation
             new_num = inverse(equ[i + INCREMENT])
@@ -187,6 +114,7 @@ def calc_input(equ):
         equ.remove(symbols.NEG)
         equ.remove(to_insert[i][inverse(INCREMENT)])
     
+    # resets
     to_insert = []                                                              # to_insert list reset
     # negatives end
     
@@ -195,38 +123,153 @@ def calc_input(equ):
     # parenthesis end
 
     # exponents start
+    # to_insert = [new_num, index_of_num1, index_of num2]
     for i in range(len(equ)):
-        if equ[i] == symbols.EXP:                                               # checks for negative in the equation
+        if equ[i] == symbols.EXP:                                           # checks for exponent in the equation
             new_num = exponent(equ[i - INCREMENT], equ[i + INCREMENT])
-            to_insert.append([new_num, i + DBL_INCREMENT, equ[i + INCREMENT]])  # increments take in account for insert of new_num
+            n_n_count += 1                                                  # counts the new number
+            sym_count += 1                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT])       # fills to_insert with new_num, and the numbers on either side of the symbol
+
+    # below removes all that have been solved in the equation, all that remains are the rest of the equation and the symbols
+    for i in range(n_n_count):
+        if n_n_count >= 0:
+            n_n_count = n_n_count - 1
+
+            equ.pop((to_insert[n_n_count][INCREMENT]))                      # removes the number in front of the "^"
+            equ.pop((to_insert[n_n_count][DBL_INCREMENT]) - INCREMENT)      # removes the number after the "^", takes in account that the last num was just removed
+    # removes all symbols and inserts new number
+    for i in range(sym_count):
+        temp_ind = equ.index(symbols.EXP)                       # gets index to replace at
+        equ.pop(temp_ind)                                       # pops symbol
+        equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
     
-    for i in range(len(to_insert)):                                             # if there are multiple negative numbers in to_insert it will interate over all of them
-        equ.insert(to_insert[i][INCREMENT], to_insert[i][FIRST_ELEMENT])
-        # removes all symbols and numbers involved
-        equ.remove(symbols.EXP)
-        equ.remove(to_insert[i][inverse(INCREMENT)])
-    
-    to_insert = []                                                              # to_insert list reset
+    # resets
+    to_insert = []  # to_insert list reset
+    n_n_count = 0   # n_n_count reset
+    sym_count = 0   # sym_count reset
     # exponents end
 
+    # multiplication/division starts
+    for i in range(len(equ)):
+        if equ[i] == symbols.MUL:                                                           # checks for mutliplication in the equation
+            new_num = multiply(equ[i - INCREMENT], equ[i + INCREMENT])
+            n_n_count += 1                                                                  # counts the new number
+            sym_count += 1                                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT, symbols.MUL])          # increments take in account for insert of new_num
+        if equ[i] == symbols.DIV:                                                           # checks for division in the equation
+            new_num = divide(equ[i - INCREMENT], equ[i + INCREMENT])
+            n_n_count += 1                                                                  # counts the new number
+            sym_count += 1                                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT, symbols.DIV])          # increments take in account for insert of new_num
+
+    # below removes all that have been solved in the equation, all that remains are the rest of the equation and the symbols
+    for i in range(n_n_count):
+        if n_n_count >= 0:
+            n_n_count = n_n_count - 1
+
+            equ.pop((to_insert[n_n_count][INCREMENT]))                      # removes the number in front of the symbol
+            equ.pop((to_insert[n_n_count][DBL_INCREMENT]) - INCREMENT)      # removes the number after the symbol, takes in account that the last num was just removed
+    # removes all symbols and inserts new number
+    for i in range(sym_count):
+        temp_sym = to_insert[i][inverse(INCREMENT)]                 # gets symbol of operation
+        if temp_sym == symbols.MUL:                                 # if it is "x"
+            temp_ind = equ.index(symbols.MUL)                       # gets index to replace at
+            equ.pop(temp_ind)                                       # pops symbol
+            equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
+
+        else:                                                       # if it is "÷"
+            temp_ind = equ.index(symbols.DIV)                       # gets index to replace at
+            equ.pop(temp_ind)                                       # pops symbol
+            equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
+
+    # resets
+    to_insert = []  # to_insert list reset
+    n_n_count = 0   # n_n_count reset
+    sym_count = 0   # sym_count reset
+    # multiplication/division ends
+
+    # addition/subtraction starts
+    for i in range(len(equ)):
+        if equ[i] == symbols.ADD:                                                           # checks for addition in the equation
+            new_num = plus(equ[i - INCREMENT], equ[i + INCREMENT])
+            n_n_count += 1                                                                  # counts the new number
+            sym_count += 1                                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT, symbols.ADD])          # increments take in account for insert of new_num
+        if equ[i] == symbols.SUB:                                                           # checks for subtraction in the equation
+            new_num = minus(equ[i - INCREMENT], equ[i + INCREMENT])
+            n_n_count += 1                                                                  # counts the new number
+            sym_count += 1                                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT, symbols.SUB])          # increments take in account for insert of new_num
+
+    # below removes all that have been solved in the equation, all that remains are the rest of the equation and the symbols
+    for i in range(n_n_count):
+        if n_n_count >= 0:
+            n_n_count = n_n_count - 1
+
+            equ.pop((to_insert[n_n_count][INCREMENT]))                      # removes the number in front of the symbol
+            equ.pop((to_insert[n_n_count][DBL_INCREMENT]) - INCREMENT)      # removes the number after the symbol, takes in account that the last num was just removed
+    # removes all symbols and inserts new number
+    for i in range(sym_count):
+        temp_sym = to_insert[i][inverse(INCREMENT)]                 # gets symbol of operation
+        if temp_sym == symbols.ADD:                                 # if it is "+"
+            temp_ind = equ.index(symbols.ADD)                       # gets index to replace at
+            equ.pop(temp_ind)                                       # pops symbol
+            equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
+
+        else:                                                       # if it is "-"
+            temp_ind = equ.index(symbols.SUB)                       # gets index to replace at
+            equ.pop(temp_ind)                                       # pops symbol
+            equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
+
+    # resets
+    to_insert = []  # to_insert list reset
+    n_n_count = 0   # n_n_count reset
+    sym_count = 0   # sym_count reset
+    # addition/subtraction ends
 
 
+def main():                                                                    # [new_num, index_of_num1, index_of num2]
 
-def main():                                                                    # [new_num, insert_num, old_num]
-
-    equ = ["2", "^", "2", "3", "^", "3"]
+    equ = ["(", "33", "+", "67", ")"]
     to_insert = []
+    n_n_count = 0
+    sym_count = 0
  
     # testing
+
     for i in range(len(equ)):
-        if equ[i] == symbols.EXP:                                               # checks for negative in the equation
-            new_num = exponent(equ[i - INCREMENT], equ[i + INCREMENT])
-            to_insert.append([new_num, i - INCREMENT, i + INCREMENT])  # increments take in account for insert of new_num
-    
-    for i in range(len(to_insert)):                                             # if there are multiple negative numbers in to_insert it will interate over all of them
-        equ.insert(to_insert[i][INCREMENT], to_insert[i][FIRST_ELEMENT])
-        # removes all symbols and numbers involved
-        equ.remove(symbols.EXP)
-        equ.remove(to_insert[i][inverse(INCREMENT)])
+        if equ[i] == symbols.ADD:                                                           # checks for addition in the equation
+            new_num = plus(equ[i - INCREMENT], equ[i + INCREMENT])
+            n_n_count += 1                                                                  # counts the new number
+            sym_count += 1                                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT, symbols.ADD])          # increments take in account for insert of new_num
+        if equ[i] == symbols.SUB:                                                           # checks for subtraction in the equation
+            new_num = minus(equ[i - INCREMENT], equ[i + INCREMENT])
+            n_n_count += 1                                                                  # counts the new number
+            sym_count += 1                                                                  # counts the symbols
+            to_insert.append([new_num, i - INCREMENT, i + INCREMENT, symbols.SUB])          # increments take in account for insert of new_num
+
+    # below removes all that have been solved in the equation, all that remains are the rest of the equation and the symbols
+    for i in range(n_n_count):
+        if n_n_count >= 0:
+            n_n_count = n_n_count - 1
+
+            equ.pop((to_insert[n_n_count][INCREMENT]))                      # removes the number in front of the symbol
+            equ.pop((to_insert[n_n_count][DBL_INCREMENT]) - INCREMENT)      # removes the number after the symbol, takes in account that the last num was just removed
+    # removes all symbols and inserts new number
+    for i in range(sym_count):
+        temp_sym = to_insert[i][inverse(INCREMENT)]                 # gets symbol of operation
+        if temp_sym == symbols.ADD:                                 # if it is "+"
+            temp_ind = equ.index(symbols.ADD)                       # gets index to replace at
+            equ.pop(temp_ind)                                       # pops symbol
+            equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
+
+        else:                                                       # if it is "-"
+            temp_ind = equ.index(symbols.SUB)                       # gets index to replace at
+            equ.pop(temp_ind)                                       # pops symbol
+            equ.insert(temp_ind, to_insert[i][FIRST_ELEMENT])       # inserts new number
+
+    print(equ)
 
 main()
