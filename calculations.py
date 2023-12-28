@@ -147,22 +147,22 @@ def calc_input(equ, length_of_equ_before):
 
             print(str(new_equ) + "THIS IS THE PARENTHESIS NUM" + str(num_of_l_par))
 
-            if num_of_l_par == INCREMENT:  
-                # to_insert = [new_num, number_of_nums_to_remove, starting_index, ending_index]
-                temp_solved = calc_input(new_equ, len(new_equ))
-                print("THIS IS TEMP SOLVED", temp_solved)
+            # if num_of_l_par == INCREMENT:  
+            #     # to_insert = [new_num, number_of_nums_to_remove, starting_index, ending_index]
+            #     temp_solved = calc_input(new_equ, len(new_equ))
+            #     print("THIS IS TEMP SOLVED", temp_solved)
 
-                indices = i - start_ind
-                print("THIS IS INDICES", indices)
-                for n in temp_solved[INCREMENT]:
-                    equ.pop(n)
+            #     indices = i - start_ind
+            #     print("THIS IS INDICES", indices)
+            #     for n in range(len(temp_solved[0])):
+            #         equ.pop(n)
 
-                equ.insert()
-                print("TEST")
+            #     equ.insert(indices, temp_solved[0])
+            #     print("TEST", equ)
 
-            else:
-                temp_solved = calc_input(new_equ, len(new_equ))
-                print("THIS IS TEMP SOLVED", temp_solved)
+            # else:
+            #     temp_solved = calc_input(new_equ, len(new_equ))
+            #     print("THIS IS TEMP SOLVED (ELSE)", temp_solved)
 
 
             
